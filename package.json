@@ -1,0 +1,22 @@
+{
+  "name": "fantasy-news",
+  "version": "0.0.1",
+  "description": "Aggregate news on players on your fantasy football team",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ppourmand/fantasy-news.git"
+  },
+  "author": "Pasha Pourmand",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ppourmand/fantasy-news/issues"
+  },
+  "homepage": "https://github.com/ppourmand/fantasy-news#readme",
+  "devDependencies": {
+    "electron": "^1.8.2"
+  }
+}
