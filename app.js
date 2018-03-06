@@ -27,35 +27,45 @@ function getNews(playerName) {
            url
            urlToImage
          */
-        //for(let i = 0; i < articles.length; i++){
-        //    console.log(articles[i]);
-        //}
-        let main = document.getElementById("main");
+        
+        // create the main div
+        let main = document.createElement("div");
+        main.setAttribute("class", "container-fluid");
+        main.setAttribute("id", "main");
 
         articles.forEach((a) => {
-            let new_row = document.createElement("div");
-            new_row.setAttribute("class", "row");
+            let newRow = document.createElement("div");
+            newRow.setAttribute("class", "row");
 
             let player = document.createElement("div");
             player.setAttribute("class", "col-2 border border-primary");
-            player.innerHTML = "Tom Brady";
+            player.innerHTML = playerName;
 
             let article = document.createElement("div");
             article.setAttribute("class", "col-10 border border-primary");
             article.innerHTML = a["title"];
             
-            new_row.appendChild(player);
-            new_row.appendChild(article)
+            newRow.appendChild(player);
+            newRow.appendChild(article);
 
-            main.appendChild(new_row)
-            console.log(a["description"])
-            console.log(a["author"]);
-            console.log(a["url"]);
-            console.log(a["title"]);
+            main.appendChild(newRow);
+            // console.log(a["description"]);
+            // console.log(a["author"]);
+            // console.log(a["url"]);
+            // console.log(a["title"]);
         });
+
+        document.body.appendChild(main);
     }));
 
     
 }
 
-getNews("Tom Brady");
+document.getElementById("submit-button").addEventListener("click", function(){
+    if(document.getElementById("main") !== null){
+        document.body.removeChild(document.getElementById("main"));
+    }
+    let playerText = document.getElementById("player-name-form").value;
+    getNews(playerText);
+    
+});
