@@ -19,13 +19,43 @@ function getNews(playerName) {
         articles = res.data["articles"];
 
         // iterate through the articles
-        for(let i = 0; i < articles.length; i++){
-            console.log(articles[i]["description"]);
-        }
+        /* Keys:
+           author
+           description
+           publishedAt
+           title
+           url
+           urlToImage
+         */
+        //for(let i = 0; i < articles.length; i++){
+        //    console.log(articles[i]);
+        //}
+        let main = document.getElementById("main");
+
+        articles.forEach((a) => {
+            let new_row = document.createElement("div");
+            new_row.setAttribute("class", "row");
+
+            let player = document.createElement("div");
+            player.setAttribute("class", "col-2 border border-primary");
+            player.innerHTML = "Tom Brady";
+
+            let article = document.createElement("div");
+            article.setAttribute("class", "col-10 border border-primary");
+            article.innerHTML = a["title"];
+            
+            new_row.appendChild(player);
+            new_row.appendChild(article)
+
+            main.appendChild(new_row)
+            console.log(a["description"])
+            console.log(a["author"]);
+            console.log(a["url"]);
+            console.log(a["title"]);
+        });
     }));
 
-    let lol = document.getElementById("testing");
-    lol.innerHTML = "lolcakes!";
+    
 }
 
 getNews("Tom Brady");
