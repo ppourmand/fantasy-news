@@ -18,8 +18,6 @@ function getNews(playerName) {
         })
     ).then(res => {
         articles = res.data["articles"];
-
-        // iterate through the articles
         /* Keys:
            author
            description
@@ -54,14 +52,10 @@ function getNews(playerName) {
             
             newRow.appendChild(player);
             newRow.appendChild(articleDiv);
-
             main.appendChild(newRow);
         });
-
         document.body.appendChild(main);
     }));
-
-    
 }
 
 // on clicking submit button, call news API 
@@ -72,7 +66,6 @@ document.getElementById("submit-button").addEventListener("click", function(){
     }
     let playerText = document.getElementById("player-name-form").value;
     getNews(playerText);
-    
 });
 
 // open links in browser instead of app
