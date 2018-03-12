@@ -1,6 +1,11 @@
 let config = require('./config.js')
-const shell = require('electron').shell;
 
+// installing jquery, bootstrap, and popper (for dropdown menu)
+global.jQuery = require('jquery');
+require('popper.js')
+require('bootstrap')
+
+// call the news api w/ proper parameters, set the data on the screen
 function getNews(playerName) {
     var url = 'https://newsapi.org/v2/everything?' +
             'q=' + playerName + "&" +
@@ -31,14 +36,18 @@ function getNews(playerName) {
         let main = document.createElement("div");
         main.setAttribute("class", "container-fluid");
         main.setAttribute("id", "main");
-
+        
+        let player = document.createElement("div");
+        player.setAttribute("class", "col-2 border border-primary");
+        player.innerHTML = playerName;
+        
         articles.forEach((a) => {
             let newRow = document.createElement("div");
             newRow.setAttribute("class", "row");
 
-            let player = document.createElement("div");
-            player.setAttribute("class", "col-2 border border-primary");
-            player.innerHTML = playerName;
+            //let player = document.createElement("div");
+            //player.setAttribute("class", "col-2 border border-primary");
+            //player.innerHTML = playerName;
 
             let articleDiv = document.createElement("div");
             articleDiv.setAttribute("class", "col-10 border border-primary");
@@ -65,6 +74,7 @@ document.getElementById("submit-button").addEventListener("click", function(){
         document.body.removeChild(document.getElementById("main"));
     }
     let playerText = document.getElementById("player-name-form").value;
+    addPlayerToList(player);
     getNews(playerText);
 });
 
@@ -75,4 +85,18 @@ document.addEventListener('click', function (event) {
     event.preventDefault()
     shell.openExternal(event.target.href)
   }
+});
+
+function addPlayerToList(playerName, row) {
+    let player = document.createElement("div");
+    player.setAttribute("class", "col-2 border border-primary");
+    player.innerHTML = playerName;
+
+    row.appendChild(player)
+}
+
+// Changes the dropdown menu text to whatever the user clicks
+jQuery(".dropdown-menu a").click(function(){
+  jQuery(this).parents(".dropdown").find('.btn').html(jQuery(this).text() + ' <span class="caret"></span>');
+  jQuery(this).parents(".dropdown").find('.btn').val(jQuery(this).data('value'));
 });
