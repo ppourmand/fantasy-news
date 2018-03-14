@@ -6,13 +6,19 @@ global.jQuery = require('jquery');
 require('popper.js');
 require('bootstrap');
 
+// global array of news articles
+let articles = [];
+
 // call the news api w/ proper parameters, set the data on the screen
 function getNews(playerName, source) {
+    // get todays date
+    let currentDate = new Date(Date()).toISOString().substring(0,10);
+    console.log(currentDate);
     var url = 'https://newsapi.org/v2/everything?' +
-            'q=' + playerName + "&" +
-            'from=2017-01-09&' +
-            'to=2018-03-04&' +
-            'sortBy=popularity&' +
+            'q="' + playerName + '"&' +
+            //'from=2017-01-09&' +
+            //'to='+ currentDate + "&" +
+            'sortBy=relevancy&' +
             'sources='+ source + "&" + 
             'apiKey='+ config.secrets.MY_KEY;
 
@@ -23,7 +29,7 @@ function getNews(playerName, source) {
             status: response.status
         })
     ).then(res => {
-        articles = res.data["articles"];
+        let news = res.data["articles"];
         /* Keys:
            author
            description
@@ -33,49 +39,72 @@ function getNews(playerName, source) {
            urlToImage
          */
         
-        // create the main div
-        let main = document.createElement("div");
-        main.setAttribute("class", "container-fluid");
-        main.setAttribute("id", "main");
-        
-        let player = document.createElement("div");
-        player.setAttribute("class", "col-2 border border-primary");
-        player.innerHTML = playerName;
-        
-        articles.forEach((a) => {
-            let newRow = document.createElement("div");
-            newRow.setAttribute("class", "row");
-
-            // let player = document.createElement("div");
-            // player.setAttribute("class", "col-2 border border-primary");
-            // player.innerHTML = playerName;
-
-            let articleDiv = document.createElement("div");
-            articleDiv.setAttribute("class", "col-10 border border-primary");
-
-            let article = document.createElement("a");
-            let articleTitle = document.createTextNode(a["title"]);
-
-            article.href = a["url"];
-            article.appendChild(articleTitle);
-            articleDiv.appendChild(article);
-            
-            newRow.appendChild(articleDiv);
-            main.appendChild(newRow);
+        news.forEach((a) => {
+            let lol = new NewsArticle(a["title"], a["publishedAt"], "null", a["source"]["name"], a["url"]);
+            articles.push(lol);
+            console.log(articles)
         });
-        document.body.appendChild(main);
+        displayDataToScreen();
     }));
+}
+
+function displayDataToScreen() {
+    
+    articles.forEach((a) => {
+        let main = document.getElementById("main");
+
+        let newRow = document.createElement("div");
+        newRow.setAttribute("class", "row");
+
+        let dateDiv = document.createElement("div");
+        let sourceDiv = document.createElement("div");
+        let flairDiv = document.createElement("div");
+        let titleDiv = document.createElement("div")
+        
+        dateDiv.setAttribute("class", "col-1");
+        sourceDiv.setAttribute("class", "col-1");
+        flairDiv.setAttribute("class", "col-1");
+        titleDiv.setAttribute("class", "col-9");
+
+        let dateText = document.createTextNode(a.date.substring(0,10));
+        let sourceText = document.createTextNode(a.source);
+        let flairText = document.createTextNode(a.flair);
+        let titleText = document.createTextNode(a.title);
+        let titleLink = document.createElement("a")
+        titleLink.href = a.url;
+        titleLink.appendChild(titleText);
+
+        dateDiv.appendChild(dateText);  
+        sourceDiv.appendChild(sourceText);
+        flairDiv.appendChild(flairText);
+        titleDiv.appendChild(titleLink);
+
+        newRow.appendChild(dateDiv);
+        newRow.appendChild(sourceDiv);
+        newRow.appendChild(flairDiv);
+        newRow.appendChild(titleDiv);
+
+        main.appendChild(newRow);
+    });
+    
 }
 
 // on clicking submit button, call news API 
 // clear the window if existing articles
 document.getElementById("submit-button").addEventListener("click", function(){
     if(document.getElementById("main") !== null){
-        document.body.removeChild(document.getElementById("main"));
+        console.log("clearing main div");
+        document.getElementById("main-container").removeChild(document.getElementById("main"));
+        let main = document.createElement("div");
+        main.setAttribute("id", "main");
+        document.getElementById("main-container").appendChild(main);
+
+        // remember to clear the articles array
+        articles = [];
     }
-    let playerText = document.getElementById("player-name-form").value.replace(/ /g,"%20");;
-    let source = getUserSourceChoice();
-    getNews(playerText, source);
+    let playerText = document.getElementById("player-name-form").value;
+    getNews(playerText.split(' ').join('%20'), "bleacher-report");
+    getNewsFromReddit(playerText);
 });
 
 // open links in browser instead of app
@@ -87,25 +116,49 @@ document.addEventListener('click', function (event) {
   }
 });
 
-function getUserSourceChoice() {
-   let choice = document.getElementById("dropdownMenuButton").textContent;
 
-   if(choice === "NFL.com ") {
-       return "nfl-news";
-   }
-   else if(choice === "ABC via ESPN ") {
-       return "espn";
-   }
-   else if(choice === "Fox Sports ") {
-       return "fox-sports";
-   }
-   else {
-        return "bleacher-report";
-   }
+// using reddit api, grab json of hot posts on r/nfl and grab the posts tagged as rumor
+function getNewsFromReddit(playerName) {
+    console.log(playerName);
+    playerName = playerName.toLowerCase()
+    //console.log("reddit output:");
+
+    jQuery.getJSON("https://www.reddit.com/r/nfl/.json?sort=hot", function(res){
+        let posts = res["data"]["children"]
+        bgColor = 0;
+        
+        //console.log(posts)
+        // useful keys
+        // title
+        // permalink
+        // url
+        // link_flair_text 
+        // if the title has the players named that we searched in it, display it on screen
+        posts.forEach((p) => {
+            let flair = p["data"]["link_flair_text"];
+            let title = p["data"]["title"].toLowerCase();
+            let permalink = "https://reddit.com" + p["data"]["permalink"];
+            let redditUrl = p["data"]["url"];
+
+            if(flair === "Rumor" || flair === "Roster Move" || title.includes(playerName)) {
+                if(title.includes(playerName)){
+                    let a = new NewsArticle(title, "2018-03-13", flair, "Reddit", permalink);
+                    articles.push(a); 
+                }
+            }
+        });
+        displayDataToScreen();
+    });
+
 }
 
-// Changes the dropdown menu text to whatever the user clicks
-jQuery(".dropdown-menu a").click(function(){
-  jQuery(this).parents(".dropdown").find('.btn').html(jQuery(this).text() + ' <span class="caret"></span>');
-  jQuery(this).parents(".dropdown").find('.btn').val(jQuery(this).data('value'));
-});
+
+class NewsArticle {
+    constructor(title, publishedDate, flair, source, url){
+        this.title = title;
+        this.date = publishedDate;
+        this.flair = flair;
+        this.source = source;
+        this.url = url;
+    }
+}

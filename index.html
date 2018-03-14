@@ -4,31 +4,33 @@
         <meta charset="UTF-8">
         <title>Hello World!</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+        <link rel="stylesheet" href="index.css">
     </head>
     <body>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-2 border border-primary">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" id="player-name-form" placeholder="Player name" aria-label="Player name" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="submit-button">Submit</button>
+    <div class="container-fluid" id="main-container">
+        
+            <div class="row">
+                <div class="col-2">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="player-name-form" placeholder="Player name" aria-label="Player name" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="submit-button">Submit</button>
+                        </div>
                     </div>
                 </div>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bleacher Report</button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Bleacher Report</a>
-                        <a class="dropdown-item" href="#">ABC via ESPN</a>
-                        <a class="dropdown-item" href="#">Fox Sports</a>
-                        <a class="dropdown-item" href="#">NFL.com</a>
-                    </div>
+                <div class="col-10">
+                    Articles
                 </div>
             </div>
-            <div class="col-10 border border-primary">
-                Articles
+            <div class="row">
+                <div class="col-1 text-white"><h1>Date</h1></div>
+                <div class="col-1 text-white"><h1>Source</h1></div>
+                <div class="col-1 text-white"><h1>Flair</h1></div>
+                <div class="col-9 text-white"><h1>Article</h1></div>
+            </div>
+            <div id="main">
+
             </div>
         </div>
     </div>
