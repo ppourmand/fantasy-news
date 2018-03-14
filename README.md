@@ -1,2 +1,2 @@
 # Placeholder for readme
-![alt text](sample-screenshot.png "Sample")
+![alt text](sample-ui.png "Sample")
