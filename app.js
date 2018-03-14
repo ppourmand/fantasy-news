@@ -55,6 +55,7 @@ function displayDataToScreen() {
 
         let newRow = document.createElement("div");
         newRow.setAttribute("class", "row");
+        newRow.setAttribute("id", "article-row");
 
         let dateDiv = document.createElement("div");
         let sourceDiv = document.createElement("div");
@@ -64,7 +65,7 @@ function displayDataToScreen() {
         dateDiv.setAttribute("class", "col-1");
         sourceDiv.setAttribute("class", "col-1");
         flairDiv.setAttribute("class", "col-1");
-        titleDiv.setAttribute("class", "col-9");
+        titleDiv.setAttribute("class", "col-6");
 
         let dateText = document.createTextNode(a.date.substring(0,10));
         let sourceText = document.createTextNode(a.source);
