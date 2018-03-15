@@ -8,4 +8,4 @@ Well, you don't yet. I am still developing it and haven't had a release.
 Why tf not man, I'm bored and I like webdev
 
 # UI Preview
-![alt text](sample-ui.png "Sample")
+![alt text](sample.png "Sample")
