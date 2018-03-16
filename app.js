@@ -90,22 +90,24 @@ function displayDataToScreen() {
     
 }
 
-// on clicking submit button, call news API 
-// clear the window if existing articles
-document.getElementById("submit-button").addEventListener("click", function(){
-    if(document.getElementById("main") !== null){
-        console.log("clearing main div");
-        document.getElementById("main-container").removeChild(document.getElementById("main"));
-        let main = document.createElement("div");
-        main.setAttribute("id", "main");
-        document.getElementById("main-container").appendChild(main);
+// when user hits enter, do same thing as submit button did
+document.getElementById("player-name-form").addEventListener("keyup", function(event){
+    if(event.keyCode === 13){
+        if(document.getElementById("main") !== null){
+            console.log("clearing main div");
+            document.getElementById("main-container").removeChild(document.getElementById("main"));
+            let main = document.createElement("div");
+            main.setAttribute("id", "main");
+            document.getElementById("main-container").appendChild(main);
 
-        // remember to clear the articles array
-        articles = [];
+            // remember to clear the articles array
+            articles = [];
+        }
+        let playerText = document.getElementById("player-name-form").value;
+        getNews(playerText.split(' ').join('%20'), "bleacher-report");
+        getNewsFromReddit(playerText);
     }
-    let playerText = document.getElementById("player-name-form").value;
-    getNews(playerText.split(' ').join('%20'), "bleacher-report");
-    getNewsFromReddit(playerText);
+    
 });
 
 // open links in browser instead of app
