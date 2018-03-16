@@ -40,7 +40,7 @@ function getNews(playerName, source) {
          */
         
         news.forEach((a) => {
-            let lol = new NewsArticle(a["title"], a["publishedAt"], "null", a["source"]["name"], a["url"]);
+            let lol = new NewsArticle(a["title"], a["publishedAt"], "", a["source"]["name"], a["url"]);
             articles.push(lol);
             console.log(articles)
         });
@@ -54,7 +54,7 @@ function displayDataToScreen() {
         let main = document.getElementById("main");
 
         let newRow = document.createElement("div");
-        newRow.setAttribute("class", "row");
+        newRow.setAttribute("class", "row mt-2 mb-2 pt-4 pb-4");
         newRow.setAttribute("id", "article-row");
 
         let dateDiv = document.createElement("div");
@@ -62,10 +62,10 @@ function displayDataToScreen() {
         let flairDiv = document.createElement("div");
         let titleDiv = document.createElement("div")
         
-        dateDiv.setAttribute("class", "col-1");
-        sourceDiv.setAttribute("class", "col-1");
-        flairDiv.setAttribute("class", "col-1");
-        titleDiv.setAttribute("class", "col-6");
+        dateDiv.setAttribute("class", "col-2 ml-auto");
+        sourceDiv.setAttribute("class", "col-2 ml-auto");
+        flairDiv.setAttribute("class", "col-2 ml-auto");
+        titleDiv.setAttribute("class", "col-6 ml-auto");
 
         let dateText = document.createTextNode(a.date.substring(0,10));
         let sourceText = document.createTextNode(a.source);
