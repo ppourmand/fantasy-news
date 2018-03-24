@@ -165,3 +165,5 @@ class NewsArticle {
         this.url = url;
     }
 }
+
+getNews("nfl", "bleacher-report");
